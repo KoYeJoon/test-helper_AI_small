@@ -4,13 +4,14 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-def detect_text(photo, bucket,studentID):
+def detect_text(path, bucket,studentID):
 
     client=boto3.client('rekognition')
+    
+    image = {'S3Object':{'Bucket':bucket,'Name':path}}
+    response = client.detect_text(Image=image)
 
-    response = client.detect_text(Image={'S3Object':{'Bucket':bucket,'Name':photo}})
-
-    print('Detected texts for ' + photo)   
+    print('Detected texts for ' + path)   
     correct = False 
     for textDetail in response['TextDetections']:
         # print(json.dumps(textDetail, indent=4, sort_keys=True))
@@ -22,10 +23,10 @@ def detect_text(photo, bucket,studentID):
     return correct
     
 def main():
-    photo=os.environ['S3_IMAGE']
+    path=os.environ['S3_ROOT'] + os.environ['S3_TEMP_TEST'] + "/student/" + os.environ['S3_TEMP_STUDENT'] + "/id_card.jpg"
     bucket=os.environ['S3_BUCKET']
     studentID=os.environ['STUDENT_ID']
-    response =detect_text(photo, bucket,studentID)
+    response =detect_text(path, bucket,studentID)
     if response :
         print("Result : True")
     else :
