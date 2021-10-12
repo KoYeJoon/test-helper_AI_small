@@ -12,7 +12,7 @@ def compare_faces(src_path,tar_path,bucket):
     tar_img = {'S3Object':{'Bucket':bucket,'Name': tar_path}}
     response = client.compare_faces(SimilarityThreshold=SIMILARITY_THRESHOLD, SourceImage=src_img, TargetImage=tar_img)
 
-    print(json.dumps(response, indent=4, sort_keys=True))
+    # print(json.dumps(response, indent=4, sort_keys=True))
     if len(response['FaceMatches'])==0 :
         return False
 
