@@ -12,7 +12,7 @@
         <h1>test-helper AI small</h1>
         <h3>Student Identification</h3>
         <div>
-            <form action="/temp/identification" method="POST" class="form-floating">
+            <form action="/identification" method="POST" class="form-floating">
                 <div class="form-group">
                     <label for="floatingInputValue">test id</label>
                     <input type="text" class="form-control" id="floatingInputValue" placeholder="00002" name="test_id">
@@ -31,10 +31,10 @@
 
         <h3>hand detection</h3>
         <div>
-            <form action="/temp/detection" method="POST">
+            <form action="/hand-detection" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="exampleFormControlFile1">Example hand sfile input</label>
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="hand_img">
                   </div>
                 
                 <div>

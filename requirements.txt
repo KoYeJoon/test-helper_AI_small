@@ -1,4 +1,14 @@
 flask
+flask_cors
 python-dotenv
 requests
 boto3
+opencv-python
+scipy
+tensorflow==1.6.0
+keras==2.1.5
+h5py==2.10.0
+pillow
+matplotlib
+"numpy<1.17"
+imageio
