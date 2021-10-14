@@ -73,7 +73,7 @@ class YOLO(object):
         num_classes = len(self.class_names)
 
         is_tiny_version = num_anchors==6 # default setting
-        # print(num_classes,model_path)
+
         try:
             self.yolo_model = load_model(model_path, compile=False)
         except:
@@ -174,7 +174,7 @@ class YOLO(object):
 
         end = timer()
         print(end - start)
-        return image,len(out_boxes),out_boxes
+        return image,len(out_boxes), out_boxes
 
     def close_session(self):
         self.sess.close()

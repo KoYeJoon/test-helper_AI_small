@@ -10,5 +10,5 @@ keras==2.1.5
 h5py==2.10.0
 pillow
 matplotlib
-"numpy<1.17"
+numpy==1.16
 imageio
