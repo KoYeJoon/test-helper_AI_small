@@ -35,21 +35,67 @@ cf ) Capstone 수업에서 배웠던 JUnit과 비교하였을 때, JUnit의 @bef
 
 
 ### 1. 본인인증 테스트
+```python
+# compare_face 함수 실행 시, 두 사람의 얼굴이 다른 경우
+def test_wrong_face(self) 
+
+# compare_face 함수 실행 시, 두 사람의 얼굴이 같은 경우
+def test_right_face(self)
+
+#  detect_text 함수 실행 시, 학생증 번호가 틀린 경우
+def test_wrong_card(self)
+
+#  detect_text 함수 실행 시, 학생증 번호가 맞는 경우
+def test_right_card(self)
+```
+
+<br />
 
 ### 2. 두 손 인식 테스트
 
 
+<br />
+<br />
+
 # 2. API test with no server 
+localhost: 5000에 서버를 띄우기 전, 다양한 경우의 body가 post로 도착했을 때, 알맞는 response를 주는지 확인할 수 있다 . 
 
 ### 1. 본인인증 테스트
+```python
+# 모든 파라미터가 알맞게 들어간 경우
+def test_right_parameter(self)
+
+# test id가 잘못 들어온 경우
+def test_wrong_test_parameter(self)
+
+# student id가 잘못 들어온 경우
+def test_wrong_studentID_parameter(self)
+
+# test id가 누락된 경우
+def test_no_test_parameter(self)
+
+# studentID가 누락된 경우
+def test_no_studentID_parameter(self)
+```
+
+<br />
+
 ### 2. 두 손 인식 테스트 
 
-
+<br />
+<br />
+ 
 # 3. API test with server 
+localhost: 5000에 서버를 띄운 후, 다양한 경우의 body가 실제 requests.post로 도착했을 때, 알맞는 response를 주는지 확인할 수 있다 . 
 
 ### 1. 본인인증 테스트 
+위의 2. API test with no server와 같다 !
+
+
 ### 2. 두 손 인식 테스트 
 
+<br />
+<br />
 
 # 4. view-test
 간단한 html을 만들어, 실제 본인인증, 두손 인식 결과를 시각화할 수 있도록 하였다. 
@@ -61,8 +107,13 @@ cf ) Capstone 수업에서 배웠던 JUnit과 비교하였을 때, JUnit의 @bef
 ```bash
 $ python view_test.py
 ```
-```
+
+  
+<br />
+
+
 cf ) hand_detection/yolo3/src model 구분
+```
 yolo3.py : yolo3 원래 본 모델 --> PIL.image 사용하여야 하므로 font가 필요하다. 이 모델은 사용하지 않았다.
 yolo3_cv.py : view_test를 위해 PIL이 아닌 cv2로 그림을 그리도록 수정하였다. cv2는 PIL보다 이미지 처리 속도가 훨씬 빠르기 때문에 view_test에서는 cv2로 바꾸었다. 이는 view_test에서 손 위치를 그림으로 보여줄 때 사용된다.
 yolo3_simple.py : 몇 개의 손이 인식되었는지에 대해서만 반환한다. 이는 app.py에서 실제로 사용되는 모델이다.
