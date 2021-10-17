@@ -28,7 +28,7 @@ def identification():
     student_id = request.form['student_id']
     idcard_path=os.environ['S3_ROOT'] + test_id + "/student/" + student_id + "/id_card.jpg"
     bucket=os.environ['S3_BUCKET']
-    result_text = detect_text(idcard_path, bucket,student_id)
+    result_text = detect_text(bucket, idcard_path,student_id)
 
     if not result_text :
         return render_template(
@@ -38,7 +38,7 @@ def identification():
         # return {'result': False}
 
     face_path = os.environ['S3_ROOT'] + test_id + "/student/" + student_id + "/face.jpg"
-    result_face =compare_faces(idcard_path,face_path, bucket)
+    result_face =compare_faces(bucket,idcard_path,face_path)
 
     return render_template(
             'result_id.html',
