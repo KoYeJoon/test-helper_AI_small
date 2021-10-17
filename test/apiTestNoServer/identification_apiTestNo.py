@@ -1,8 +1,6 @@
-from typing import Union
 import unittest
 import os
 import warnings
-import requests
 import json
 
 from dotenv import load_dotenv

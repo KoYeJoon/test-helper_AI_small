@@ -1,72 +1,76 @@
 from student_identification.detectText import detect_text
 from student_identification.compareFace import compare_faces
-from hand_detection.yolo3.src.yolo3 import YOLO
+from hand_detection.yolo3.src.yolo3_simple import YOLO
 
 from dotenv import load_dotenv
 load_dotenv()
 
-from flask import Flask, redirect, url_for, request, render_template, send_file
+from flask import Flask, redirect, url_for, request, render_template
+from flask_restful import reqparse
 from flask_cors import CORS
 from keras import backend as K
 
 from PIL import Image
-import cv2
-import numpy as np
+import json
 import os
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/',methods=['GET'])
-def index():
-    return render_template('index.html')
-
-
 @app.route('/identification',methods=['POST'])
 def identification():
-    test_id = request.form['test_id']
-    student_id = request.form['student_id']
-    idcard_path=os.environ['S3_ROOT'] + test_id + "/student/" + student_id + "/id_card.jpg"
+    parser = reqparse.RequestParser()
+    parser.add_argument('test_id')
+    parser.add_argument('student_id')
+    args = parser.parse_args()
+
+    test_id = args['test_id']
+    student_id = args['student_id']
+    
+    if not test_id or not student_id :
+        return json.dumps({'result' : False})
+
+    idcard_path=os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/student_card.jpg"
+    face_path = os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/face.jpg"
     bucket=os.environ['S3_BUCKET']
-    result_text = detect_text(bucket, idcard_path,student_id)
 
+    result_text = False
+    try : 
+        result_text = detect_text(bucket, idcard_path,student_id)
+    except :
+        print("AWS 에 접근 시 오류가 발생하였습니다! ")
+        return json.dumps({'result': False})
+    
     if not result_text :
-        return render_template(
-            'result_id.html',
-            result = result_text,
-        )
-        # return {'result': False}
+        return json.dumps({'result': False})
 
-    face_path = os.environ['S3_ROOT'] + test_id + "/student/" + student_id + "/face.jpg"
-    result_face =compare_faces(bucket,idcard_path,face_path)
+    result_face = False
+    try :
+        result_face =compare_faces(bucket,idcard_path,face_path)
+    except :
+        print("AWS 에 접근 시 오류가 발생하였습니다! ")
+        return json.dumps({'result' : False})
+        
+    return json.dumps({'result' : result_face})
 
-    return render_template(
-            'result_id.html',
-            result = result_face,
-        )
-    # return {'result' : result_face}
 
 
 @app.route('/hand-detection',methods=['POST'])
 def detection():
     # model = yolo.get_model()
     # model.summary()
-    
-    image = Image.open(request.files['hand_img'])
+    parser = reqparse.RequestParser()
+    parser.add_argument('hand_img')
+    args = parser.parse_args()
+    image = Image.open(args['hand_img'])
     print(yolo)
-    result_image,hand_num,bbox = yolo.detect_image(image)
-    opencvImage = cv2.cvtColor(np.array(result_image), cv2.COLOR_RGB2BGR) 
-    opencvImage = cv2.resize(opencvImage,dsize=(360,240))
-    cv2.imwrite("static/images/result.jpg",opencvImage)
-    result_path = "images/result.jpg"
+    hand_num = yolo.detect_image(image)
+    result=False
+    if hand_num == 2 :
+        result = True
+   
     # K.clear_session()
-    # return send_file(result_image, mimetype='image/gif')
-    # return {hand_num : hand_num, bbox : bboxs}
-    return render_template(
-            'result_hand.html', 
-            result_path = result_path,
-            hand_num=hand_num, bbox=bbox
-    )
+    return json.dumps({'result':result})
 
 
 if __name__ == '__main__':

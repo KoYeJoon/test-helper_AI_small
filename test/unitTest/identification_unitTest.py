@@ -1,12 +1,11 @@
 import unittest
-import requests
 import os
 import warnings
 from dotenv import load_dotenv
 load_dotenv()
 
 import sys
-sys.path.append("..")
+sys.path.append("../../")
 
 from student_identification.compareFace import compare_faces
 from student_identification.detectText import detect_text

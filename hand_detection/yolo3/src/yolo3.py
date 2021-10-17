@@ -136,7 +136,8 @@ class YOLO(object):
 
         print('Found {} boxes for {}'.format(len(out_boxes), 'img'))
         ## boxes 여기서 개수 가져오면 됨 !! - out_boxes
-        font = ImageFont.truetype(font='hand_detection/yolo3/font/FiraMono-Medium.otf',
+        ###### view_test일 때 경로에 ../ 추가해야 함 !!! 
+        font = ImageFont.truetype(font='../hand_detection/yolo3/font/FiraMono-Medium.otf',
                     size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
         thickness = (image.size[0] + image.size[1]) // 300
 

@@ -31,18 +31,26 @@ def identification_test():
     test_id = request.form['test_id']
     student_id = request.form['student_id']
     idcard_path=os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/student_card.jpg"
+    face_path = os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/face.jpg"
     bucket=os.environ['S3_BUCKET']
-    result_text = detect_text(bucket, idcard_path,student_id)
-
+    result_text = False
+    try : 
+        result_text = detect_text(bucket, idcard_path,student_id)
+    except :
+        print("AWS 에 접근 시 오류가 발생하였습니다. ")
+    
     if not result_text :
         return render_template(
             'result_id.html',
             result = result_text,
-        )
+    )
 
-    face_path = os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/face.jpg"
-    result_face =compare_faces(bucket,idcard_path,face_path)
-
+    result_face = False
+    try :
+        result_face =compare_faces(bucket,idcard_path,face_path)
+    except :
+        print("AWS 에 접근 시 오류가 발생하였습니다. ")
+        
     return render_template(
             'result_id.html',
             result = result_face,

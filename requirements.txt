@@ -12,3 +12,4 @@ pillow
 matplotlib
 numpy==1.16
 imageio
+flask_restful
