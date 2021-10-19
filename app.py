@@ -34,23 +34,11 @@ def identification():
     face_path = os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/face.jpg"
     bucket=os.environ['S3_BUCKET']
 
-    result_text = False
-    try : 
-        result_text = detect_text(bucket, idcard_path,student_id)
-    except :
-        print("AWS 에 접근 시 오류가 발생하였습니다! ")
-        return json.dumps({'result': False})
-    
+    result_text = detect_text(bucket, idcard_path,student_id)
     if not result_text :
         return json.dumps({'result': False})
-
-    result_face = False
-    try :
-        result_face =compare_faces(bucket,idcard_path,face_path)
-    except :
-        print("AWS 에 접근 시 오류가 발생하였습니다! ")
-        return json.dumps({'result' : False})
-        
+    
+    result_face = compare_faces(bucket,idcard_path,face_path)
     return json.dumps({'result' : result_face})
 
 

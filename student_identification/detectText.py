@@ -5,20 +5,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def detect_text(bucket,path,studentID):
-
-    client=boto3.client('rekognition')
-    
     image = {'S3Object':{'Bucket':bucket,'Name':path}}
-    response = client.detect_text(Image=image)
-
-    # print('Detected texts for ' + path)   
     correct = False 
-    for textDetail in response['TextDetections']:
-        # print(json.dumps(textDetail, indent=4, sort_keys=True))
-        # print("DetectedText : " + str(textDetail['DetectedText']))
-        # print("Confidence: " + str(textDetail['Type']))
-        if studentID == str(textDetail['DetectedText']) :
-            correct= True
+    try :
+        client=boto3.client('rekognition')
+        response = client.detect_text(Image=image)
+        # print('Detected texts for ' + path)   
+        for textDetail in response['TextDetections']:
+            # print(json.dumps(textDetail, indent=4, sort_keys=True))
+            # print("DetectedText : " + str(textDetail['DetectedText']))
+            # print("Confidence: " + str(textDetail['Type']))
+            if studentID == str(textDetail['DetectedText']) :
+                correct= True
+                break
+    except:
+        print("AWS 에 접근 시 오류가 발생하였습니다! ")
+        return False
 
     return correct
     
