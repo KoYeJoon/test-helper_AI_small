@@ -2,9 +2,6 @@ from student_identification.detectText import detect_text
 from student_identification.compareFace import compare_faces
 from hand_detection.yolo3.src.yolo3_simple import YOLO
 
-from dotenv import load_dotenv
-load_dotenv()
-
 from flask import Flask, redirect, url_for, request, render_template
 from flask_restful import reqparse
 from flask_cors import CORS
@@ -14,6 +11,7 @@ from PIL import Image
 import json
 import os
 
+import s3path
 app = Flask(__name__)
 CORS(app)
 
@@ -30,10 +28,10 @@ def identification():
     if not test_id or not student_id :
         return json.dumps({'result' : False})
 
-    idcard_path=os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/student_card.jpg"
-    face_path = os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/face.jpg"
-    bucket=os.environ['S3_BUCKET']
-
+    idcard_path= s3path.S3_ROOT+ test_id + s3path.S3_STUDENT_FOLDER+ student_id + s3path.S3_STUDENT_CARD
+    face_path = s3path.S3_ROOT+ test_id + s3path.S3_STUDENT_FOLDER+ student_id + s3path.S3_FACE
+    bucket=s3path.S3_BUCKET
+    print(idcard_path, face_path)
     result_text = detect_text(bucket, idcard_path,student_id)
     if not result_text :
         return json.dumps({'result': False})

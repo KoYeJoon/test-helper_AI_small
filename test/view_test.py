@@ -5,6 +5,7 @@ from student_identification.detectText import detect_text
 from student_identification.compareFace import compare_faces
 from hand_detection.yolo3.src.yolo3_cv import YOLO
 
+import s3path
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -30,9 +31,9 @@ def index_test():
 def identification_test():
     test_id = request.form['test_id']
     student_id = request.form['student_id']
-    idcard_path=os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/student_card.jpg"
-    face_path = os.environ['S3_ROOT'] + test_id + "/submission/" + student_id + "/face.jpg"
-    bucket=os.environ['S3_BUCKET']
+    idcard_path= s3path.S3_ROOT+ test_id + s3path.S3_STUDENT_FOLDER+ student_id + s3path.S3_STUDENT_CARD
+    face_path = s3path.S3_ROOT+ test_id + s3path.S3_STUDENT_FOLDER+ student_id + s3path.S3_FACE
+    bucket=s3path.S3_BUCKET
 
     if not test_id or not student_id :
         return render_template(

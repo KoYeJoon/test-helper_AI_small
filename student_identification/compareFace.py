@@ -27,9 +27,13 @@ def compare_faces(bucket,src_path,tar_path):
 
      
 def main():
-    src_path = os.environ['S3_ROOT'] + os.environ['S3_TEMP_TEST'] + "/submission/" + os.environ['S3_TEMP_STUDENT'] + "/student_card.jpg"
-    tar_path = os.environ['S3_ROOT'] + os.environ['S3_TEMP_TEST'] + "/submission/" + os.environ['S3_TEMP_STUDENT'] + "/face.jpg"
-    bucket=os.environ['S3_BUCKET']
+    import sys
+    sys.path.append('../')
+    import s3path
+    src_path = s3path.S3_ROOT + os.environ['S3_TEMP_TEST'] + s3path.S3_STUDENT_FOLDER+ os.environ['S3_TEMP_STUDENT'] + s3path.S3_STUDENT_CARD
+    tar_path = s3path.S3_ROOT + os.environ['S3_TEMP_TEST'] + s3path.S3_STUDENT_FOLDER + os.environ['S3_TEMP_STUDENT'] + s3path.S3_FACE
+    # tar_path = os.environ['S3_ROOT'] + os.environ['S3_TEMP_TEST'] + "/student/" + os.environ['S3_TEMP_STUDENT'] + "/fake_face.jpg"
+    bucket= s3path.S3_BUCKET
     response =compare_faces(bucket,src_path,tar_path)
     if response :
         print("Result : True")
