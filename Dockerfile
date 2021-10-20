@@ -1,6 +1,6 @@
 FROM python:3.6
 
-WORKDIR /test-helper_AI_small
+WORKDIR /
 COPY . .
 RUN apt-get update -y
 RUN apt install libgl1-mesa-glx -y
@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-CMD ["python","./app.py"]
+CMD ["python","app.py"]

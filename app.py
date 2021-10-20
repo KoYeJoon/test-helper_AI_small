@@ -45,10 +45,8 @@ def identification():
 def detection():
     # model = yolo.get_model()
     # model.summary()
-    parser = reqparse.RequestParser()
-    parser.add_argument('hand_img')
-    args = parser.parse_args()
-    image = Image.open(args['hand_img'])
+    print(request.files['hand_img'])
+    image = Image.open(request.files['hand_img'])
     print(yolo)
     hand_num = yolo.detect_image(image)
     result=False

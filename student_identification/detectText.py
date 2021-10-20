@@ -8,7 +8,10 @@ def detect_text(bucket,path,studentID):
     image = {'S3Object':{'Bucket':bucket,'Name':path}}
     correct = False 
     try :
-        client=boto3.client('rekognition')
+        client=boto3.client('rekognition',
+                            region_name=os.environ['aws_region_name'] , 
+                            aws_access_key_id=os.environ['aws_access_key_id'] ,
+                            aws_secret_access_key=os.environ['aws_secret_access_key'] )
         response = client.detect_text(Image=image)
         # print('Detected texts for ' + path)   
         for textDetail in response['TextDetections']:
