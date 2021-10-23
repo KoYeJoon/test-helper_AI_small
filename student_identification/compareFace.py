@@ -12,10 +12,7 @@ def compare_faces(bucket,src_path,tar_path):
     tar_img = {'S3Object':{'Bucket':bucket,'Name': tar_path}}
     answer = True
     try :
-        client=boto3.client('rekognition',
-                            region_name=os.environ['aws_region_name'] , 
-                            aws_access_key_id=os.environ['aws_access_key_id'] ,
-                            aws_secret_access_key=os.environ['aws_secret_access_key'] )
+        client=boto3.client('rekognition')
         response = client.compare_faces(SimilarityThreshold=SIMILARITY_THRESHOLD, SourceImage=src_img, TargetImage=tar_img)
         if len(response['FaceMatches'])==0 :
             answer=False

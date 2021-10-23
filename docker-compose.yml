@@ -8,3 +8,5 @@ services:
     image: test-helper_ai_small:latest
     ports:
       - 5000:5000
+    volumes:
+      - $HOME/.aws/credentials:/root/.aws/credentials:ro
