@@ -9,3 +9,5 @@
 [Click! go to AWS boto 계정 설정 방법](https://github.com/KoYeJoon/test-helper_AI_small/blob/main/AWS_boto.md)
 
 ### Hand Detection
+yolov3, google mediapipe api, ssd+vgg16, ssd+mobilenetv1
+
