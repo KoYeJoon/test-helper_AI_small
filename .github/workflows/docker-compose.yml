@@ -3,7 +3,7 @@ services:
   test-helper_ai_small:
     container_name: ai-server
     build:
-      context: ./
+      context: ../../
       dockerfile: Dockerfile
     image: test-helper_ai_small:latest
     environment:
