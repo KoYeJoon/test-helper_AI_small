@@ -1,6 +1,7 @@
 import boto3
 import json
 import os
+import sys
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -19,13 +20,12 @@ def detect_text(bucket,path,studentID):
                 correct= True
                 break
     except:
-        print("AWS 에 접근 시 오류가 발생하였습니다! ")
+        sys.stderr.write("AWS 에 접근 시 오류가 발생하였습니다! ")
         return False
 
     return correct
     
 def main():
-    import sys
     sys.path.append('../')
     import s3path
     bucket=s3path.S3_BUCKET

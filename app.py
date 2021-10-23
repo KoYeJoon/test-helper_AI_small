@@ -14,6 +14,8 @@ import os
 import s3path
 import numpy as np
 import cv2
+import sys
+
 app = Flask(__name__)
 CORS(app)
 
@@ -33,7 +35,7 @@ def identification():
     idcard_path= s3path.S3_ROOT+ test_id + s3path.S3_STUDENT_FOLDER+ student_id + s3path.S3_STUDENT_CARD
     face_path = s3path.S3_ROOT+ test_id + s3path.S3_STUDENT_FOLDER+ student_id + s3path.S3_FACE
     bucket=s3path.S3_BUCKET
-    print(idcard_path, face_path)
+    sys.stderr.write(idcard_path+" " +face_path+"\n")
     result_text = detect_text(bucket, idcard_path,student_id)
     if not result_text :
         return json.dumps({'result': False})
@@ -45,7 +47,7 @@ def identification():
 
 @app.route('/hand-detection',methods=['POST'])
 def detection():
-    print(request.files['hand_img'])
+    sys.stderr.write(str(request.files['hand_img']))
     image = Image.open(request.files['hand_img'])
     hand_num = google_hands(cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR))
     # hand_num = yolo.detect_image(image)

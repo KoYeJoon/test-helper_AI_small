@@ -1,7 +1,7 @@
 import boto3
 import json
 import os
-
+import sys
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -18,7 +18,7 @@ def compare_faces(bucket,src_path,tar_path):
             answer=False
         # print(json.dumps(response, indent=4, sort_keys=True))
     except :
-        print("AWS 에 접근 시 오류가 발생하였습니다! ")
+        sys.stderr.write("AWS 에 접근 시 오류가 발생하였습니다! ")
         return False
 
 
@@ -27,7 +27,6 @@ def compare_faces(bucket,src_path,tar_path):
 
      
 def main():
-    import sys
     sys.path.append('../')
     import s3path
     src_path = s3path.S3_ROOT + os.environ['S3_TEMP_TEST'] + s3path.S3_STUDENT_FOLDER+ os.environ['S3_TEMP_STUDENT'] + s3path.S3_STUDENT_CARD
