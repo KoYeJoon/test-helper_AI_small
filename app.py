@@ -1,7 +1,7 @@
 from student_identification.detectText import detect_text
 from student_identification.compareFace import compare_faces
 from hand_detection.yolo3.src.yolo3_simple import YOLO
-
+from hand_detection.google.google_hand import google_hands
 from flask import Flask, redirect, url_for, request, render_template
 from flask_restful import reqparse
 from flask_cors import CORS
@@ -12,6 +12,8 @@ import json
 import os
 
 import s3path
+import numpy as np
+import cv2
 app = Flask(__name__)
 CORS(app)
 
@@ -43,12 +45,10 @@ def identification():
 
 @app.route('/hand-detection',methods=['POST'])
 def detection():
-    # model = yolo.get_model()
-    # model.summary()
     print(request.files['hand_img'])
     image = Image.open(request.files['hand_img'])
-    print(yolo)
-    hand_num = yolo.detect_image(image)
+    hand_num = google_hands(cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR))
+    # hand_num = yolo.detect_image(image)
     result=False
     if hand_num == 2 :
         result = True
@@ -58,9 +58,9 @@ def detection():
 
 
 if __name__ == '__main__':
-    model_path = "hand_detection/yolo3/model_data/custom_weights_final.h5"
-    class_path = "hand_detection/yolo3/model_data/classes.txt"
-    anchor_path = "hand_detection/yolo3/model_data/tiny_yolo_anchor.txt"
-    yolo = YOLO(model_path=model_path, classes_path=class_path, anchors_path=anchor_path)
+    # model_path = "hand_detection/yolo3/model_data/custom_weights_final.h5"
+    # class_path = "hand_detection/yolo3/model_data/classes.txt"
+    # anchor_path = "hand_detection/yolo3/model_data/tiny_yolo_anchor.txt"
+    # yolo = YOLO(model_path=model_path, classes_path=class_path, anchors_path=anchor_path)
     app.run(host='0.0.0.0',port=5000,threaded=True,debug=True)
     #app.run(host='0.0.0.0',port=5000,debug=True)
