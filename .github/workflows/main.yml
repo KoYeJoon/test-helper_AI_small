@@ -42,7 +42,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY : ${{secrets.AWS_SECRET_ACCESS_KEY}}
           AWS_REGION : ${{secrets.AWS_REGION}}
           AWS_DEFAULT_REGION : ${{secrets.AWS_REGION}}
-        run: docker-compose run test-helper_ai_small sh test/all_test.sh
+        run: |
+         echo aws s3 ls
+         docker-compose run test-helper_ai_small sh test/all_test.sh
 
       - name: Stop containers
         run : docker-compose -f "docker-compose.yml" down
