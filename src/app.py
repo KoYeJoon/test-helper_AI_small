@@ -1,6 +1,6 @@
 from student_identification.detectText import detect_text
 from student_identification.compareFace import compare_faces
-from hand_detection.yolo3.src.yolo3_simple import YOLO
+#from hand_detection.yolo3.src.yolo3_simple import YOLO
 from hand_detection.google.google_hand import google_hands
 from flask import Flask, redirect, url_for, request, render_template
 from flask_restful import reqparse
