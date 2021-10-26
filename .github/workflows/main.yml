@@ -37,7 +37,10 @@ jobs:
           aws-region : ${{secrets.AWS_REGION}}
 
       - name: run unit test
-        run: sh test/all_test.sh
+        run: |
+          docker ps
+          python src/app.py
+          sh test/all_test.sh
 
       - name: Stop containers
         run : docker-compose -f "docker-compose.yml" down
