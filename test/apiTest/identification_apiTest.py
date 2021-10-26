@@ -7,15 +7,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import sys
-sys.path.append("../../")
+sys.path.extend(["./","../","../../","./src","../src","../../src"])
 
 import app
+import s3path
 
 class UnitTest(unittest.TestCase):
     def setUp(self):
         self.app = app.app.test_client()
-        self.studentID = os.environ['S3_TEMP_STUDENT']
-        self.testID = os.environ['S3_TEMP_TEST']
+        self.studentID = s3path.S3_TEMP_STUDENT_ID
+        self.testID = s3path.S3_TEMP_TEST_ID
         self.fakestudentID = '00000000'
         self.faketestID = '000000'
         self.right_parameter = {
@@ -42,7 +43,6 @@ class UnitTest(unittest.TestCase):
         response = self.app.post('/identification', data=self.right_parameter)
         data = json.loads(response.data.decode('utf-8'))
         self.assertEqual(True, data['result'])
-
 
     def test_wrong_test_parameter(self):
         response = self.app.post("/identification",data=self.wrong_parameter_testID)

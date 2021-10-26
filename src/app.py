@@ -15,6 +15,7 @@ import s3path
 import numpy as np
 import cv2
 import sys
+sys.path.append("../")
 
 app = Flask(__name__)
 CORS(app)
