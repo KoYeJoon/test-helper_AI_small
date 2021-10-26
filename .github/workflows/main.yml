@@ -44,6 +44,8 @@ jobs:
           AWS_DEFAULT_REGION : ${{secrets.AWS_REGION}}
         run: |
          aws s3 ls
+         pwd
+         pip freeze
          sh test/all_test.sh
 
       - name: Stop containers
