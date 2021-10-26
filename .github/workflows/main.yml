@@ -37,6 +37,7 @@ jobs:
           aws-region : ${{secrets.AWS_REGION}}
 
       - name: run unit test
+        uses: aws-actions/configure-aws-credentials@v1
         run: docker-compose run test-helper_ai_small sh test/all_test.sh
 
       - name: Stop containers
