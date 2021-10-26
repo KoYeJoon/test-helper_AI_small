@@ -31,7 +31,7 @@ jobs:
 
       - name : run unit test
         env : 
-          AWS_ACCESS_KEY : ${{secrets.AWS_ACCESS_KEY}}
+          AWS_ACCESS_KEY_ID : ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY : ${{secrets.AWS_SECRET_ACCESS_KEY}}
           AWS_REGION : ${{secrets.AWS_REGION}}
         run : docker-compose run test-helper_ai_small sh test/all_test.sh
