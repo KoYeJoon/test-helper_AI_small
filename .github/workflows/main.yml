@@ -44,7 +44,7 @@ jobs:
           AWS_DEFAULT_REGION : ${{secrets.AWS_REGION}}
         run: |
          aws s3 ls
-         docker-compose run test-helper_ai_small sh test/all_test.sh
+         sh test/all_test.sh
 
       - name: Stop containers
         run : docker-compose -f "docker-compose.yml" down
