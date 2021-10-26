@@ -6,7 +6,8 @@ from flask import Flask, redirect, url_for, request, render_template
 from flask_restful import reqparse
 from flask_cors import CORS
 # from keras import backend as K
-
+import sys
+sys.path.append("../")
 from PIL import Image
 import json
 import os
@@ -14,8 +15,7 @@ import os
 import s3path
 import numpy as np
 import cv2
-import sys
-sys.path.append("../")
+
 
 app = Flask(__name__)
 CORS(app)
