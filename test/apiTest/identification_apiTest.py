@@ -1,11 +1,6 @@
 import unittest
-import os
 import warnings
 import json
-
-from dotenv import load_dotenv
-load_dotenv()
-
 import sys
 sys.path.extend(["./","../","../../","./src","../src","../../src"])
 
