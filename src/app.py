@@ -5,7 +5,7 @@ from hand_detection.google.google_hand import google_hands
 from flask import Flask, redirect, url_for, request, render_template
 from flask_restful import reqparse
 from flask_cors import CORS
-from keras import backend as K
+# from keras import backend as K
 
 from PIL import Image
 import json
