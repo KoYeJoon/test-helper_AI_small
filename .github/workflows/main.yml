@@ -28,6 +28,13 @@ jobs:
       # Runs a single command using the runners shell
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d --build
+      
+      - name : configure AWS credentials
+        uses : aws-actions/configure-aws-credentials@v1
+        with :
+          AWS_ACCESS_KEY : ${{secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_ACCESS_KEY : ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          AWS_REGION : ${{secrets.AWS_REGION}}
 
       - name : run unit test
         run : docker-compose run test-helper_ai_small sh test/all_test.sh
