@@ -1,3 +1,5 @@
 #!/bin/bash
 
-docker-compose up -d --build
+if [ -d docker-compose.yml ]; then
+    docker-compose down
+fi
