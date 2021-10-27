@@ -1,0 +1,19 @@
+version: 0.0
+os: ubuntu
+files:
+  - source: ./
+    destination: /home/ec2-user/test-helper
+hooks:
+  BeforeInstall:
+    - location: scripts/remove_server.sh
+      runas: root
+  Install :
+     - location : scripts/install_dependencies.sh
+       runas : root
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      runas: root
+  ApplicationStop:
+    - location: scripts/remove_server.sh
+      timeout: 300
+      runas: root

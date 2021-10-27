@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  continious-intetgration:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -24,10 +24,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up -d --build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -50,9 +46,6 @@ jobs:
         run: |
           sh test/all_test.sh
 
-      - name: Stop containers
-        run : docker-compose -f "docker-compose.yml" down
-
       - name: if fail  # 만약 실패했을 때의 설정
         uses: actions/github-script@v3  # 커스텀 스크립트를 사용하게 해주는 액션
         with:  # 커스텀 스크립트 작성란
@@ -72,3 +65,31 @@ jobs:
               state: "closed"
             })
         if: failure()  # 실패했다는 이벤트가 발생하면 바로 위의 액션 실행
+
+  continious-deployment :
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Create CodeDeploy Deployment
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name test-helper \
+          --deployment-group-name test-helper-codedeploy-group \
+          --deployment-config-name CodeDeployDefault.OneAtATime \
+          --github-locattion repository=${{ github.repository }},commitId=${{ github.sha }}
