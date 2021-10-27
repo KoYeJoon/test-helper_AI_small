@@ -47,10 +47,6 @@ jobs:
         run: |
           sh test/all_test.sh
 
-      - name: run pytest
-        run : |
-         pytest
-
       - name: if fail  # 만약 실패했을 때의 설정
         uses: actions/github-script@v3  # 커스텀 스크립트를 사용하게 해주는 액션
         with:  # 커스텀 스크립트 작성란
