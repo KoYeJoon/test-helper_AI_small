@@ -2,12 +2,12 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/test-helper
+    destination: /home/ubuntu/test-helper/
 hooks:
   BeforeInstall:
     - location: scripts/init_server.sh
       runas: root
-  Install :
+  AfterInstall :
      - location : scripts/install_dependencies.sh
        runas : root
   ApplicationStart:
@@ -15,5 +15,4 @@ hooks:
       runas: root
   ApplicationStop:
     - location: scripts/remove_server.sh
-      timeout: 300
       runas: root
