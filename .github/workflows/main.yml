@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: code CI&CD
 
 # Controls when the workflow will run
 on:
@@ -92,4 +92,4 @@ jobs:
           --application-name test-helper \
           --deployment-group-name test-helper-codedeploy-group \
           --deployment-config-name CodeDeployDefault.OneAtATime \
-          --github-locattion repository=${{ github.repository }},commitId=${{ github.sha }}
+          --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
