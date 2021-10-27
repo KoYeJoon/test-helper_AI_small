@@ -5,7 +5,7 @@ files:
     destination: /home/ubuntu/test-helper
 hooks:
   BeforeInstall:
-    - location: scripts/remove_server.sh
+    - location: scripts/init_server.sh
       runas: root
   Install :
      - location : scripts/install_dependencies.sh
