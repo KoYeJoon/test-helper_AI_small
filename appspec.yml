@@ -1,8 +1,8 @@
 version: 0.0
 os: ubuntu
 files:
-  - source: ./
-    destination: /home/ec2-user/test-helper
+  - source: /
+    destination: /home/ubuntu/test-helper
 hooks:
   BeforeInstall:
     - location: scripts/remove_server.sh
