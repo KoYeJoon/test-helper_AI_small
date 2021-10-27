@@ -1,7 +1,5 @@
 #!/bin/bash
 
-if [ -d /home/ubuntu/test-helper ]; then
-    rm -rf /home/ubuntu/test-helper 
+if [ -d /home/ubuntu/test-helper_AI_small ]; then
+    rm -rf /home/ubuntu/test-helper_AI_small 
 fi
-
-mkdir -vp /home/ubuntu/test-helper 

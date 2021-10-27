@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/test-helper/
+    destination: /home/ubuntu/test-helper_AI_small
 hooks:
   BeforeInstall:
     - location: scripts/init_server.sh
@@ -13,4 +13,6 @@ hooks:
   ApplicationStart:
     - location: scripts/start_server.sh
       runas: root
-
+  ApplicationStop:
+    - location: scripts/remove_server.sh
+      runas: root
