@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: test-helper_ai_small:latest
     environment:
-      - AWS_PROFILE=yejoon
+      - AWS_PROFILE=test-helper
     ports:
       - 5000:5000
     volumes:

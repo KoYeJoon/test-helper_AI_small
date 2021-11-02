@@ -1,4 +1,4 @@
-S3_BUCKET = "mytemptest"
+S3_BUCKET = "testhelper"
 S3_ROOT = "test/"
 S3_STUDENT_FOLDER = "/submission/"
 S3_STUDENT_CARD = "/student_card.jpg"
