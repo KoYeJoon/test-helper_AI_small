@@ -29,10 +29,9 @@ def main():
     sys.path.append('../')
     import s3path
     bucket=s3path.S3_BUCKET
-    path=s3path.S3_ROOT + os.environ['S3_TEMP_TEST'] + s3path.S3_STUDENT_FOLDER+ os.environ['S3_TEMP_STUDENT'] + s3path.S3_STUDENT_CARD
-    student_id=os.environ['STUDENT_ID']
-    
-    response =detect_text(bucket, path, student_id)
+    path=s3path.S3_ROOT + s3path.S3_TEMP_TEST_ID + s3path.S3_STUDENT_FOLDER+ s3path.S3_TEMP_STUDENT_NUM + s3path.S3_STUDENT_CARD
+    student_num= s3path.S3_TEMP_STUDENT_NUM
+    response =detect_text(bucket,path, student_num)
     if response :
         print("Result : True")
     else :
