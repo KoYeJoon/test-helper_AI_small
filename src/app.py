@@ -6,6 +6,7 @@ from flask import Flask, redirect, url_for, request, render_template
 # from flask_restful import reqparse
 from flask_cors import CORS
 from flask_restx import Resource, Api, fields, reqparse
+from werkzeug.datastructures import FileStorage
 # from keras import backend as K
 import sys
 sys.path.extend(["./","../"])
@@ -19,15 +20,19 @@ import cv2
 
 
 app = Flask(__name__)
-app.config.SWAGGER_UI_DOC_EXPANSION = 'full'
+# app.config.SWAGGER_UI_DOC_EXPANSION = 'full'
 
 api = Api(app,versison='1.0',title='test-helper-ai-api',
           description = 'check test-helper-ai-api')
 ns_identification = api.namespace('identification', description = 'student identification')
+ns_hand_detection = api.namespace('hand-detection',description= "hand detection")
 
-parser_identification = reqparse.RequestParser()
-parser_identification.add_argument('test_id', type= str,help = 'ID of test',location='form')
-parser_identification.add_argument('student_num', type= str,help = 'num of student',location='form')
+parser_identification = api.parser()
+parser_identification.add_argument('test_id', type= str,help = 'ID of test',required=True, location='form')
+parser_identification.add_argument('student_num', type= str,help = 'num of student',required=True, location='form')
+
+parser_hand = api.parser()
+parser_hand.add_argument('hand_img', type =FileStorage, help = "hand image",required=True, location='files')
 
 @ns_identification.route("")
 class Identification(Resource):
@@ -63,6 +68,22 @@ class Identification(Resource):
         return {'result' : result_face,
                            'err_reason': None }
 
+
+@ns_hand_detection.route("")
+class HandDetection(Resource):
+    @api.expect(parser_hand)
+    def post(self):
+        args = parser_hand.parse_args()
+
+        hand_img = Image.open(args['hand_img'])
+        hand_num = google_hands(cv2.cvtColor(np.array(hand_img), cv2.COLOR_RGB2BGR))
+        # hand_num = yolo.detect_image(image)
+        result=False
+        if hand_num == 2 :
+            result = True
+   
+        # K.clear_session()
+        return {'result':result}
 
 
 # @app.route('/identification',methods=['POST'])
@@ -102,18 +123,18 @@ class Identification(Resource):
 
 
 
-@app.route('/hand-detection',methods=['POST'])
-def detection():
-    sys.stderr.write(str(request.files['hand_img']))
-    image = Image.open(request.files['hand_img'])
-    hand_num = google_hands(cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR))
-    # hand_num = yolo.detect_image(image)
-    result=False
-    if hand_num == 2 :
-        result = True
+# @app.route('/hand-detection',methods=['POST'])
+# def detection():
+#     sys.stderr.write(str(request.files['hand_img']))
+#     image = Image.open(request.files['hand_img'])
+#     hand_num = google_hands(cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR))
+#     # hand_num = yolo.detect_image(image)
+#     result=False
+#     if hand_num == 2 :
+#         result = True
    
-    # K.clear_session()
-    return json.dumps({'result':result})
+#     # K.clear_session()
+#     return json.dumps({'result':result})
 
 
 if __name__ == '__main__':
