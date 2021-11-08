@@ -28,11 +28,11 @@ ns_identification = api.namespace('identification', description = 'student ident
 ns_hand_detection = api.namespace('hand-detection',description= "hand detection")
 
 parser_identification = api.parser()
-parser_identification.add_argument('test_id', type= str,help = 'ID of test',required=True, location='form')
-parser_identification.add_argument('student_num', type= str,help = 'num of student',required=True, location='form')
+parser_identification.add_argument('test_id', type= str,help = 'ID of test',location='form')
+parser_identification.add_argument('student_num', type= str,help = 'num of student',location='form')
 
 parser_hand = api.parser()
-parser_hand.add_argument('hand_img', type =FileStorage, help = "hand image",required=True, location='files')
+parser_hand.add_argument('hand_img', type =FileStorage, help = "hand image", location='files')
 
 @ns_identification.route("")
 class Identification(Resource):
@@ -74,8 +74,11 @@ class HandDetection(Resource):
     @api.expect(parser_hand)
     def post(self):
         args = parser_hand.parse_args()
-
-        hand_img = Image.open(args['hand_img'])
+        try :
+            hand_img = Image.open(args['hand_img'])
+        except :
+            sys.stderr.write("image is weird!\n")
+            return {'result': False}
         hand_num = google_hands(cv2.cvtColor(np.array(hand_img), cv2.COLOR_RGB2BGR))
         # hand_num = yolo.detect_image(image)
         result=False
